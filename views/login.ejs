@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>New Years Tracker</title>
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+        padding: 24px;
+      }
+
+      /* ── Branding ── */
+      .branding {
+        text-align: center;
+        margin-bottom: 36px;
+      }
+
+      .branding-title {
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -1px;
+        background: linear-gradient(135deg, #fff 0%, #c9b8ff 60%, #ff71ce 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.15;
+        margin-bottom: 8px;
+      }
+
+      .branding-sub {
+        font-size: 13px;
+        color: rgba(255,255,255,0.45);
+        letter-spacing: 0.5px;
+      }
+
+      .branding-sub strong {
+        color: rgba(255,255,255,0.7);
+        font-weight: 600;
+      }
+
+      /* ── Card ── */
+      .card {
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 16px;
+        padding: 36px 40px;
+        width: 100%;
+        max-width: 380px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 24px 64px rgba(0,0,0,0.4);
+      }
+
+      .card-heading {
+        font-size: 18px;
+        font-weight: 700;
+        color: #fff;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      /* ── Error ── */
+      .error {
+        background: rgba(239,68,68,0.18);
+        border: 1px solid rgba(239,68,68,0.4);
+        color: #fca5a5;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-size: 13px;
+        margin-bottom: 18px;
+        text-align: center;
+      }
+
+      /* ── Form ── */
+      form { display: flex; flex-direction: column; gap: 16px; }
+
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(255,255,255,0.55);
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+
+      input {
+        padding: 11px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.08);
+        color: #fff;
+        font-size: 15px;
+        outline: none;
+        transition: border-color 0.2s, background 0.2s;
+      }
+
+      input::placeholder { color: rgba(255,255,255,0.25); }
+
+      input:focus {
+        border-color: rgba(180,150,255,0.7);
+        background: rgba(255,255,255,0.12);
+      }
+
+      button[type="submit"] {
+        margin-top: 4px;
+        padding: 13px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(135deg, #b967ff, #01cdfe);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 0.3px;
+        transition: opacity 0.15s, transform 0.1s;
+      }
+
+      button[type="submit"]:hover  { opacity: 0.9; }
+      button[type="submit"]:active { transform: scale(0.98); }
+
+      /* ── Demo hint ── */
+      .muted {
+        margin-top: 18px;
+        text-align: center;
+        font-size: 12px;
+        color: rgba(255,255,255,0.3);
+      }
+
+      .muted strong { color: rgba(255,255,255,0.55); }
+
+      /* ── Decorative stars ── */
+      .stars {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 0;
+      }
+      .star {
+        position: absolute;
+        border-radius: 50%;
+        background: #fff;
+        opacity: 0;
+        animation: twinkle linear infinite;
+      }
+      @keyframes twinkle {
+        0%,100% { opacity: 0; transform: scale(0.8); }
+        50%      { opacity: 0.7; transform: scale(1.2); }
+      }
+
+      .branding, .card { position: relative; z-index: 1; }
+    </style>
+  </head>
+  <body>
+
+    <div class="stars" id="stars"></div>
+
+    <div class="branding">
+      <div class="branding-title">🎆 New Years Tracker</div>
+      <div class="branding-sub">Powered by <strong>NANJA Business Inc.</strong></div>
+    </div>
+
+    <div class="card">
+      <div class="card-heading">Sign in</div>
+
+      <% if (error) { %>
+        <div class="error"><%= error %></div>
+      <% } %>
+
+      <form method="POST" action="/login">
+        <label>Username
+          <input name="username" placeholder="Enter username" required autofocus>
+        </label>
+        <label>PIN
+          <input name="pin" type="password" inputmode="numeric" pattern="\d{4,6}" maxlength="6" placeholder="••••" required>
+        </label>
+        <button type="submit">Sign in →</button>
+      </form>
+
+      <p class="muted">Demo: <strong>alice</strong> / <strong>1234</strong></p>
+    </div>
+
+    <script>
+      // Sprinkle twinkling stars in the background
+      const container = document.getElementById('stars');
+      for (let i = 0; i < 60; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = 1 + Math.random() * 2.5;
+        s.style.cssText = `
+          width:${size}px; height:${size}px;
+          top:${Math.random()*100}%;
+          left:${Math.random()*100}%;
+          animation-duration:${2+Math.random()*4}s;
+          animation-delay:${Math.random()*4}s;
+        `;
+        container.appendChild(s);
+      }
+    </script>
+  </body>
+</html>

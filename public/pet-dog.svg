@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 130" width="80" height="130">
+  <!-- tail (wagging up) -->
+  <path d="M 60 88 Q 82 68 76 46" stroke="#b87030" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <!-- body -->
+  <ellipse cx="38" cy="94" rx="24" ry="28" fill="#d4943a"/>
+  <!-- belly -->
+  <ellipse cx="38" cy="97" rx="13" ry="19" fill="#f0c878"/>
+  <!-- left floppy ear -->
+  <ellipse cx="16" cy="46" rx="11" ry="19" fill="#b07028" transform="rotate(-12,16,46)"/>
+  <!-- right floppy ear -->
+  <ellipse cx="60" cy="46" rx="11" ry="19" fill="#b07028" transform="rotate(12,60,46)"/>
+  <!-- head -->
+  <circle cx="38" cy="44" r="26" fill="#d4943a"/>
+  <!-- snout -->
+  <ellipse cx="38" cy="54" rx="14" ry="11" fill="#f0c878"/>
+  <!-- eyes -->
+  <circle cx="29" cy="40" r="6" fill="#1a1a2e"/>
+  <circle cx="47" cy="40" r="6" fill="#1a1a2e"/>
+  <!-- iris -->
+  <circle cx="29" cy="40" r="4" fill="#7b4a1e"/>
+  <circle cx="47" cy="40" r="4" fill="#7b4a1e"/>
+  <!-- pupil -->
+  <circle cx="29" cy="40" r="2.5" fill="#1a1a2e"/>
+  <circle cx="47" cy="40" r="2.5" fill="#1a1a2e"/>
+  <!-- eye shine -->
+  <circle cx="31" cy="37" r="2" fill="white"/>
+  <circle cx="49" cy="37" r="2" fill="white"/>
+  <!-- nose -->
+  <ellipse cx="38" cy="51" rx="7" ry="5" fill="#1a1a2e"/>
+  <!-- nose shine -->
+  <ellipse cx="36" cy="49" rx="2" ry="1.5" fill="#555" opacity="0.6"/>
+  <!-- mouth -->
+  <path d="M 31 58 Q 38 66 45 58" stroke="#b06028" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <!-- tongue -->
+  <ellipse cx="38" cy="64" rx="5" ry="4" fill="#e05070"/>
+  <line x1="38" y1="62" x2="38" y2="68" stroke="#c04060" stroke-width="1"/>
+  <!-- collar -->
+  <path d="M 16 62 Q 38 70 60 62" stroke="#e03030" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="38" cy="67" r="3" fill="#ffd700"/>
+  <!-- front paws -->
+  <ellipse cx="26" cy="120" rx="11" ry="8" fill="#d4943a"/>
+  <ellipse cx="50" cy="120" rx="11" ry="8" fill="#d4943a"/>
+  <!-- paw toes -->
+  <ellipse cx="20" cy="122" rx="3.5" ry="2.5" fill="#c08030"/>
+  <ellipse cx="26" cy="125" rx="3.5" ry="2.5" fill="#c08030"/>
+  <ellipse cx="32" cy="122" rx="3.5" ry="2.5" fill="#c08030"/>
+  <ellipse cx="44" cy="122" rx="3.5" ry="2.5" fill="#c08030"/>
+  <ellipse cx="50" cy="125" rx="3.5" ry="2.5" fill="#c08030"/>
+  <ellipse cx="56" cy="122" rx="3.5" ry="2.5" fill="#c08030"/>
+</svg>

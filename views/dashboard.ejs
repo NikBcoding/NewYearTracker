@@ -1,0 +1,760 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+      /* ── Tracker styles ── */
+      .tracker-wrap { max-width: 640px; margin: 32px auto; padding: 0 16px 64px; }
+      .tracker-wrap h2 { font-size: 22px; margin-bottom: 16px; }
+
+      .tracker-add-goal-row { display: flex; gap: 8px; margin-bottom: 24px; }
+      .tracker-input { flex: 1; padding: 10px 12px; border: 1px solid #d0d7e3; border-radius: 6px; font-size: 14px; }
+      .tracker-btn { padding: 10px 16px; background: #0066ff; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; white-space: nowrap; }
+      .tracker-btn:hover { background: #0052cc; }
+      .tracker-btn-sm { padding: 8px 14px; font-size: 15px; }
+      .tracker-btn-icon { background: none; border: none; cursor: pointer; font-size: 14px; color: #999; padding: 2px 6px; border-radius: 4px; }
+      .tracker-btn-icon:hover { background: #f0f0f0; color: #c00; }
+
+      .tracker-goal { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+      .tracker-goal-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+      .tracker-goal-title { font-weight: 600; font-size: 16px; flex: 1; }
+      .tracker-goal-progress { font-size: 12px; color: #888; }
+
+      .tracker-task-list { list-style: none; padding: 0; margin: 0 0 12px; }
+      .tracker-task { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0f0f0; gap: 8px; }
+      .tracker-task:last-child { border-bottom: none; }
+      .tracker-task-name { flex: 1; font-size: 14px; }
+      .tracker-task-done .tracker-task-name { text-decoration: line-through; color: #aaa; }
+      .tracker-task-actions { display: flex; align-items: center; gap: 6px; }
+
+.tracker-done-badge { font-size: 12px; color: #22c55e; font-weight: 600; }
+
+      /* ── Checkbox ── */
+      .tracker-checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; flex: 1; }
+      .tracker-checkbox { width: 16px; height: 16px; cursor: pointer; accent-color: #0066ff; }
+
+      /* ── Checklist section ── */
+      #checklist-section { margin-top: 32px; }
+      #checklist-section h2 { font-size: 20px; margin-bottom: 16px; border-top: 1px solid #e2e8f0; padding-top: 24px; }
+      .cl-goal { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+      .cl-goal-title { font-weight: 700; font-size: 15px; margin-bottom: 10px; color: #0066ff; }
+      .cl-list { list-style: none; padding: 0; margin: 0; }
+      .cl-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px solid #f3f4f6; font-size: 14px; }
+      .cl-item:last-child { border-bottom: none; }
+      .cl-check { font-size: 16px; color: #ccc; min-width: 18px; }
+      .cl-done .cl-check { color: #22c55e; }
+      .cl-done .cl-name { text-decoration: line-through; color: #aaa; }
+
+      .tracker-add-task-row { display: flex; gap: 8px; margin-top: 4px; }
+      .tracker-empty { color: #aaa; font-size: 14px; text-align: center; padding: 24px 0; }
+
+      /* ── Deadline badges ── */
+      .deadline-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; white-space: nowrap; }
+      .deadline-ok      { background: #f1f5f9; color: #64748b; }
+      .deadline-soon    { background: #fef9c3; color: #854d0e; }
+      .deadline-overdue { background: #fee2e2; color: #b91c1c; }
+      .tracker-goal-deadline { font-size: 12px; }
+      .tracker-date-input { padding: 8px 10px; border: 1px solid #d0d7e3; border-radius: 6px; font-size: 13px; color: #333; }
+
+      /* ── Modal ── */
+      #tracker-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; z-index: 999; }
+      #tracker-modal-overlay.hidden { display: none; }
+      .tracker-modal { background: #fff; border-radius: 10px; padding: 28px 32px; max-width: 360px; width: 90%; text-align: center; box-shadow: 0 12px 40px rgba(0,0,0,0.18); }
+      .tracker-modal h3 { margin: 0 0 8px; font-size: 18px; }
+      .tracker-modal p { margin: 0 0 20px; color: #555; font-size: 14px; }
+      .tracker-modal-task { font-weight: 600; color: #111; }
+      .tracker-modal-actions { display: flex; gap: 12px; justify-content: center; }
+      .tracker-modal-actions .tracker-btn { min-width: 90px; }
+      .tracker-btn-no { background: #e5e7eb; color: #333; }
+      .tracker-btn-no:hover { background: #d1d5db; }
+
+      /* ── Background overlay ── */
+      #bg-overlay { position: fixed; inset: 0; z-index: -1; opacity: 0.35; transition: background 0.3s; pointer-events: none; }
+
+      /* ── Color picker button ── */
+      .color-picker-wrap { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+      .color-picker-wrap label { font-size: 13px; color: #555; cursor: pointer; white-space: nowrap; }
+      #bg-color-picker { width: 28px; height: 28px; border: none; border-radius: 50%; cursor: pointer; padding: 0; background: none; }
+
+      /* ── Topbar ── */
+      .topbar { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; background: #fff; border-bottom: 1px solid #e2e8f0; }
+      .topbar h1 { margin: 0; font-size: 18px; }
+
+      /* ── Points badge ── */
+      .points-badge { display: flex; align-items: center; gap: 6px; background: #fef9c3; border: 1px solid #fde047; border-radius: 20px; padding: 5px 14px; font-size: 14px; font-weight: 600; color: #854d0e; }
+      .points-badge .points-icon { font-size: 16px; }
+
+      /* ── Points toast ── */
+      #points-toast { position: fixed; bottom: 24px; right: 24px; background: #22c55e; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 14px; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,0.15); opacity: 0; transform: translateY(10px); transition: opacity 0.3s, transform 0.3s; pointer-events: none; z-index: 1000; }
+      #points-toast.show { opacity: 1; transform: translateY(0); }
+
+      /* ── Corner pet ── */
+      #corner-pet { position: fixed; bottom: 20px; left: 20px; z-index: 998; display: flex; flex-direction: column; align-items: center; cursor: pointer; user-select: none; }
+      #pet-bubble { background: #fff; border: 2px solid #e2e8f0; border-radius: 12px; padding: 6px 12px; font-size: 12px; font-weight: 600; color: #333; margin-bottom: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); opacity: 0; transform: translateY(4px); transition: opacity 0.2s, transform 0.2s; white-space: nowrap; pointer-events: none; }
+      #pet-bubble::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); border: 4px solid transparent; border-top-color: #e2e8f0; }
+      #corner-pet:hover #pet-bubble { opacity: 1; transform: translateY(0); }
+      #pet-emoji { width: 90px; height: auto; display: block; transition: transform 0.1s; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+      #pet-toggle { font-size: 11px; color: #aaa; text-align: center; margin-top: 4px; background: rgba(255,255,255,0.7); border-radius: 8px; padding: 2px 8px; }
+      #pet-toggle:hover { color: #0066ff; background: #fff; }
+
+      @keyframes pet-float  { 0%,100%{ transform: translateY(0);        } 50%{ transform: translateY(-6px);      } }
+      @keyframes pet-jump   { 0%,100%{ transform: translateY(0) scale(1);} 30%{ transform: translateY(-24px) scale(1.1);} 60%{ transform: translateY(-8px) scale(1.05);} }
+      @keyframes pet-spin   { 0%{ transform: rotate(0deg) scale(1.1);  } 100%{ transform: rotate(360deg) scale(1.1); } }
+      @keyframes pet-wiggle { 0%,100%{ transform: rotate(0deg);  } 20%{ transform: rotate(-15deg); } 40%{ transform: rotate(15deg); } 60%{ transform: rotate(-10deg); } 80%{ transform: rotate(10deg); } }
+      @keyframes pet-shake  { 0%,100%{ transform: translateX(0);  } 20%{ transform: translateX(-6px); } 40%{ transform: translateX(6px); } 60%{ transform: translateX(-4px); } 80%{ transform: translateX(4px); } }
+
+      #pet-emoji.idle   { animation: pet-float  3s ease-in-out infinite; }
+      #pet-emoji.jump   { animation: pet-jump   0.6s ease forwards; }
+      #pet-emoji.spin   { animation: pet-spin   0.6s linear forwards; }
+      #pet-emoji.wiggle { animation: pet-wiggle 0.5s ease forwards; }
+      #pet-emoji.shake  { animation: pet-shake  0.4s ease forwards; }
+
+      /* ── Shop button ── */
+      .shop-open-btn { padding: 10px 16px; background: #7c3aed; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: 600; white-space: nowrap; }
+      .shop-open-btn:hover { background: #6d28d9; }
+
+      /* ── Shop modal ── */
+      #shop-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1001; padding: 16px; }
+      #shop-modal-overlay.hidden { display: none; }
+      .shop-modal { background: #fff; border-radius: 14px; width: 100%; max-width: 580px; max-height: 85vh; display: flex; flex-direction: column; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+      .shop-modal-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px 14px; border-bottom: 1px solid #e2e8f0; }
+      .shop-modal-header h2 { margin: 0; font-size: 20px; }
+      .shop-modal-pts { background: #fef9c3; border: 1px solid #fde047; border-radius: 16px; padding: 4px 12px; font-size: 14px; font-weight: 600; color: #854d0e; }
+      .shop-close-btn { background: none; border: none; font-size: 20px; cursor: pointer; color: #999; padding: 4px 8px; border-radius: 6px; line-height: 1; }
+      .shop-close-btn:hover { background: #f0f0f0; color: #333; }
+      .shop-tabs { display: flex; gap: 4px; padding: 10px 24px; border-bottom: 1px solid #e2e8f0; }
+      .shop-tab { padding: 7px 16px; border: none; background: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: #666; }
+      .shop-tab:hover { background: #f0f0f0; }
+      .shop-tab.active { background: #0066ff; color: #fff; }
+      #shop-items { padding: 16px 20px 20px; overflow-y: auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 12px; }
+      .shop-item { border: 2px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff; }
+      .shop-item.active-item { border-color: #0066ff; }
+      .shop-preview-bg { height: 76px; width: 100%; }
+      .shop-preview-pet { height: 84px; display: flex; align-items: center; justify-content: center; background: #f8fafc; }
+      .shop-preview-pet img { height: 68px; width: auto; }
+      .shop-preview-theme { height: 76px; display: flex; align-items: center; justify-content: center; font-size: 30px; }
+      .theme-preview-dark   { background: linear-gradient(135deg, #1e1e2e 0%, #2d2d4e 100%); }
+      .theme-preview-pastel { background: linear-gradient(135deg, #ffe8f8 0%, #ead8ff 100%); }
+      .theme-preview-nature { background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c0 100%); }
+      .shop-item-info { padding: 8px 10px 2px; display: flex; justify-content: space-between; align-items: center; }
+      .shop-item-label { font-size: 13px; font-weight: 600; color: #222; }
+      .shop-item-price { font-size: 12px; color: #854d0e; font-weight: 600; background: #fef9c3; padding: 2px 7px; border-radius: 8px; white-space: nowrap; }
+      .shop-owned-badge { font-size: 11px; color: #22c55e; font-weight: 600; }
+      .shop-buy-btn, .shop-apply-btn { width: 100%; padding: 8px 0; font-size: 13px; font-weight: 600; border: none; cursor: pointer; margin-top: 6px; }
+      .shop-buy-btn { background: #0066ff; color: #fff; }
+      .shop-buy-btn:hover:not(:disabled) { background: #0052cc; }
+      .shop-buy-btn:disabled { background: #e5e7eb; color: #aaa; cursor: not-allowed; }
+      .shop-apply-btn { background: #e5e7eb; color: #333; }
+      .shop-apply-btn:hover { background: #d1d5db; }
+      .shop-apply-btn.shop-active-btn { background: #22c55e; color: #fff; }
+      .shop-apply-btn.shop-active-btn:hover { background: #16a34a; }
+      .shop-empty { color: #aaa; font-size: 14px; text-align: center; padding: 32px 0; grid-column: 1/-1; }
+
+      /* ── Themes ── */
+      [data-theme="dark"] body { background: #0f0f1a; color: #e2e8f0; }
+      [data-theme="dark"] .topbar { background: #1e1e2e !important; border-color: #2d2d4e !important; }
+      [data-theme="dark"] h1, [data-theme="dark"] h2 { color: #e2e8f0; }
+      [data-theme="dark"] .tracker-goal, [data-theme="dark"] .cl-goal { background: #1e1e2e; border-color: #2d2d4e; }
+      [data-theme="dark"] .tracker-task { border-color: #2d2d4e; }
+      [data-theme="dark"] .tracker-task-name { color: #d4d8e2; }
+      [data-theme="dark"] .tracker-task-done .tracker-task-name { color: #555; }
+      [data-theme="dark"] .tracker-goal-title { color: #e2e8f0; }
+      [data-theme="dark"] .tracker-goal-progress { color: #888; }
+      [data-theme="dark"] .tracker-input, [data-theme="dark"] .tracker-date-input { background: #252538; border-color: #3d3d5c; color: #e2e8f0; }
+      [data-theme="dark"] .tracker-btn-no { background: #2d2d4e; color: #d4d8e2; }
+      [data-theme="dark"] .tracker-btn-no:hover { background: #3d3d5e; }
+      [data-theme="dark"] .tracker-modal { background: #1e1e2e; }
+      [data-theme="dark"] .tracker-modal h3, [data-theme="dark"] .tracker-modal-task { color: #e2e8f0; }
+      [data-theme="dark"] .tracker-modal p { color: #aaa; }
+      [data-theme="dark"] #pet-bubble { background: #1e1e2e; border-color: #2d2d4e; color: #e2e8f0; }
+      [data-theme="dark"] .cl-goal-title { color: #60a5fa !important; }
+      [data-theme="dark"] .cl-item { border-color: #2d2d4e; }
+      [data-theme="dark"] .tracker-btn-icon { color: #555; }
+      [data-theme="dark"] .tracker-btn-icon:hover { background: #2d2d4e; color: #f87171; }
+      [data-theme="dark"] #bg-overlay { opacity: 0 !important; }
+      [data-theme="dark"] .shop-modal { background: #1e1e2e; color: #e2e8f0; }
+      [data-theme="dark"] .shop-modal-header { border-color: #2d2d4e; }
+      [data-theme="dark"] .shop-modal-header h2 { color: #e2e8f0; }
+      [data-theme="dark"] .shop-tabs { border-color: #2d2d4e; }
+      [data-theme="dark"] .shop-tab { color: #aaa; }
+      [data-theme="dark"] .shop-tab:hover { background: #2d2d4e; color: #e2e8f0; }
+      [data-theme="dark"] .shop-item { border-color: #2d2d4e; background: #252538; }
+      [data-theme="dark"] .shop-item.active-item { border-color: #60a5fa; }
+      [data-theme="dark"] .shop-item-label { color: #d4d8e2; }
+      [data-theme="dark"] .shop-apply-btn { background: #2d2d4e; color: #d4d8e2; }
+      [data-theme="dark"] .shop-apply-btn:hover { background: #3d3d5e; }
+      [data-theme="dark"] .shop-close-btn:hover { background: #2d2d4e; color: #e2e8f0; }
+      [data-theme="dark"] .shop-preview-pet { background: #252538; }
+
+      [data-theme="pastel"] .topbar { background: #fff8fd !important; border-color: #f0c8e8 !important; }
+      [data-theme="pastel"] .tracker-goal, [data-theme="pastel"] .cl-goal { background: #fffafd; border-color: #f0c8e8; }
+      [data-theme="pastel"] .tracker-task { border-color: #f8e0f0; }
+      [data-theme="pastel"] .tracker-btn { background: #d946a8; }
+      [data-theme="pastel"] .tracker-btn:hover { background: #b8357a; }
+      [data-theme="pastel"] .tracker-btn-no { background: #ffe8f5; color: #8b3060; }
+      [data-theme="pastel"] .cl-goal-title { color: #c2186c !important; }
+      [data-theme="pastel"] .cl-done .cl-check { color: #d946a8; }
+      [data-theme="pastel"] .tracker-done-badge { color: #d946a8; }
+      [data-theme="pastel"] .points-badge { background: #ffe8f5; border-color: #f0a8d0; color: #8b2060; }
+      [data-theme="pastel"] .tracker-input, [data-theme="pastel"] .tracker-date-input { border-color: #f0c8e8; }
+      [data-theme="pastel"] #bg-overlay { background: linear-gradient(135deg,#ffe8f8 0%,#ead8ff 100%) !important; opacity: 0.5 !important; }
+
+      [data-theme="nature"] .topbar { background: #f4f9ee !important; border-color: #b8d898 !important; }
+      [data-theme="nature"] .tracker-goal, [data-theme="nature"] .cl-goal { background: #f8fbf4; border-color: #c8e4a8; }
+      [data-theme="nature"] .tracker-task { border-color: #e0efd0; }
+      [data-theme="nature"] .tracker-btn { background: #3d8b3d; }
+      [data-theme="nature"] .tracker-btn:hover { background: #2d6b2d; }
+      [data-theme="nature"] .tracker-btn-no { background: #e8f0e8; color: #3d5a3d; }
+      [data-theme="nature"] .cl-goal-title { color: #2d6b2d !important; }
+      [data-theme="nature"] .cl-done .cl-check { color: #3d8b3d; }
+      [data-theme="nature"] .tracker-done-badge { color: #3d8b3d; }
+      [data-theme="nature"] .points-badge { background: #eaf5e8; border-color: #b0d890; color: #2d5a2d; }
+      [data-theme="nature"] .tracker-input, [data-theme="nature"] .tracker-date-input { border-color: #b8d898; }
+      [data-theme="nature"] #bg-overlay { background: linear-gradient(135deg,#d4edda 0%,#c8e6c0 100%) !important; opacity: 0.45 !important; }
+
+      /* ── Candy theme ── */
+      [data-theme="candy"] .topbar { background: linear-gradient(90deg,#ff9de2,#ffcc44,#9de2ff) !important; border: none !important; }
+      [data-theme="candy"] .tracker-goal, [data-theme="candy"] .cl-goal { background: #fff8ff; border-color: #ffb3de; }
+      [data-theme="candy"] .tracker-task { border-color: #ffe0f0; }
+      [data-theme="candy"] .tracker-btn { background: linear-gradient(135deg,#ff6eb4,#ff44aa); }
+      [data-theme="candy"] .tracker-btn:hover { background: linear-gradient(135deg,#ff44aa,#cc1188); }
+      [data-theme="candy"] .tracker-btn-no { background: #ffe8f5; color: #880055; }
+      [data-theme="candy"] .cl-goal-title { color: #dd22aa !important; }
+      [data-theme="candy"] .points-badge { background: #fff0f8; border-color: #ffb3de; color: #cc1177; }
+      [data-theme="candy"] .tracker-done-badge { color: #dd22aa; }
+      [data-theme="candy"] #bg-overlay { background: linear-gradient(135deg,#ffccee 0%,#ffeecc 50%,#ccddff 100%) !important; opacity: 0.5 !important; }
+
+      /* ── Vaporwave theme ── */
+      [data-theme="vaporwave"] body { background: #1a0033; color: #e0d0ff; }
+      [data-theme="vaporwave"] .topbar { background: #250044 !important; border-color: #6600cc !important; }
+      [data-theme="vaporwave"] h1, [data-theme="vaporwave"] h2 { color: #ff71ce; }
+      [data-theme="vaporwave"] .tracker-goal, [data-theme="vaporwave"] .cl-goal { background: #1e0038; border-color: #6600cc; }
+      [data-theme="vaporwave"] .tracker-goal-title { color: #b5a9ff; }
+      [data-theme="vaporwave"] .tracker-task { border-color: #330066; }
+      [data-theme="vaporwave"] .tracker-task-name { color: #d4c8ff; }
+      [data-theme="vaporwave"] .tracker-task-done .tracker-task-name { color: #664488; }
+      [data-theme="vaporwave"] .tracker-input, [data-theme="vaporwave"] .tracker-date-input { background: #1a0033; border-color: #6600cc; color: #d4c8ff; }
+      [data-theme="vaporwave"] .tracker-btn { background: linear-gradient(135deg,#b967ff,#01cdfe); }
+      [data-theme="vaporwave"] .tracker-btn:hover { background: linear-gradient(135deg,#9b44ff,#00aadd); }
+      [data-theme="vaporwave"] .tracker-btn-no { background: #330066; color: #d4c8ff; }
+      [data-theme="vaporwave"] .cl-goal-title { color: #ff71ce !important; }
+      [data-theme="vaporwave"] .cl-item { border-color: #330066; }
+      [data-theme="vaporwave"] .points-badge { background: #330066; border-color: #b967ff; color: #ff71ce; }
+      [data-theme="vaporwave"] .tracker-modal { background: #1e0038; color: #d4c8ff; }
+      [data-theme="vaporwave"] .tracker-modal h3, [data-theme="vaporwave"] .tracker-modal-task { color: #ff71ce; }
+      [data-theme="vaporwave"] .tracker-modal p { color: #9980cc; }
+      [data-theme="vaporwave"] .tracker-btn-icon { color: #6644aa; }
+      [data-theme="vaporwave"] .tracker-btn-icon:hover { background: #330066; color: #ff71ce; }
+      [data-theme="vaporwave"] #pet-bubble { background: #1e0038; border-color: #6600cc; color: #d4c8ff; }
+      [data-theme="vaporwave"] #bg-overlay { opacity: 0 !important; }
+
+      /* ── Beach theme ── */
+      [data-theme="beach"] .topbar { background: #e4f4fb !important; border-color: #9ecee8 !important; }
+      [data-theme="beach"] .tracker-goal, [data-theme="beach"] .cl-goal { background: #fef9f0; border-color: #d4b896; }
+      [data-theme="beach"] .tracker-task { border-color: #ead8c0; }
+      [data-theme="beach"] .tracker-btn { background: #1a7fa8; }
+      [data-theme="beach"] .tracker-btn:hover { background: #135f80; }
+      [data-theme="beach"] .tracker-btn-no { background: #f0e4d0; color: #6b4a28; }
+      [data-theme="beach"] .cl-goal-title { color: #0e6688 !important; }
+      [data-theme="beach"] .tracker-done-badge { color: #1a7fa8; }
+      [data-theme="beach"] .points-badge { background: #fff8e8; border-color: #d4c060; color: #6b5010; }
+      [data-theme="beach"] .tracker-input, [data-theme="beach"] .tracker-date-input { border-color: #c8b898; }
+      [data-theme="beach"] #bg-overlay { background: linear-gradient(180deg,#87ceeb 0%,#e8d8b0 100%) !important; opacity: 0.4 !important; }
+
+      /* ── Shop theme previews (new) ── */
+      .theme-preview-candy     { background: linear-gradient(135deg,#ff9de2 0%,#ffcc44 50%,#9de2ff 100%); }
+      .theme-preview-vaporwave { background: linear-gradient(135deg,#1a0033 0%,#6600cc 50%,#ff71ce 100%); }
+      .theme-preview-beach     { background: linear-gradient(135deg,#87ceeb 0%,#e8d8b0 100%); }
+
+      /* ── Accent color CSS (comes after themes so accent overrides when both active) ── */
+      /* Ruby */
+      [data-accent="ruby"] .tracker-btn, [data-accent="ruby"] .shop-tab.active, [data-accent="ruby"] .shop-buy-btn, [data-accent="ruby"] .shop-apply-btn.shop-active-btn { background: #dc2626; }
+      [data-accent="ruby"] .tracker-btn:hover { background: #b91c1c; }
+      [data-accent="ruby"] .tracker-checkbox { accent-color: #dc2626; }
+      [data-accent="ruby"] .cl-goal-title { color: #dc2626 !important; }
+      [data-accent="ruby"] .tracker-done-badge { color: #dc2626; }
+      /* Violet */
+      [data-accent="violet"] .tracker-btn, [data-accent="violet"] .shop-tab.active, [data-accent="violet"] .shop-buy-btn, [data-accent="violet"] .shop-apply-btn.shop-active-btn { background: #7c3aed; }
+      [data-accent="violet"] .tracker-btn:hover { background: #6d28d9; }
+      [data-accent="violet"] .tracker-checkbox { accent-color: #7c3aed; }
+      [data-accent="violet"] .cl-goal-title { color: #7c3aed !important; }
+      [data-accent="violet"] .tracker-done-badge { color: #7c3aed; }
+      /* Tangerine */
+      [data-accent="tangerine"] .tracker-btn, [data-accent="tangerine"] .shop-tab.active, [data-accent="tangerine"] .shop-buy-btn, [data-accent="tangerine"] .shop-apply-btn.shop-active-btn { background: #ea580c; }
+      [data-accent="tangerine"] .tracker-btn:hover { background: #c2410c; }
+      [data-accent="tangerine"] .tracker-checkbox { accent-color: #ea580c; }
+      [data-accent="tangerine"] .cl-goal-title { color: #ea580c !important; }
+      [data-accent="tangerine"] .tracker-done-badge { color: #ea580c; }
+      /* Rose */
+      [data-accent="rose"] .tracker-btn, [data-accent="rose"] .shop-tab.active, [data-accent="rose"] .shop-buy-btn, [data-accent="rose"] .shop-apply-btn.shop-active-btn { background: #e11d7a; }
+      [data-accent="rose"] .tracker-btn:hover { background: #be185d; }
+      [data-accent="rose"] .tracker-checkbox { accent-color: #e11d7a; }
+      [data-accent="rose"] .cl-goal-title { color: #e11d7a !important; }
+      [data-accent="rose"] .tracker-done-badge { color: #e11d7a; }
+      /* Emerald */
+      [data-accent="emerald"] .tracker-btn, [data-accent="emerald"] .shop-tab.active, [data-accent="emerald"] .shop-buy-btn, [data-accent="emerald"] .shop-apply-btn.shop-active-btn { background: #059669; }
+      [data-accent="emerald"] .tracker-btn:hover { background: #047857; }
+      [data-accent="emerald"] .tracker-checkbox { accent-color: #059669; }
+      [data-accent="emerald"] .cl-goal-title { color: #059669 !important; }
+      [data-accent="emerald"] .tracker-done-badge { color: #059669; }
+      /* Sky */
+      [data-accent="sky"] .tracker-btn, [data-accent="sky"] .shop-tab.active, [data-accent="sky"] .shop-buy-btn, [data-accent="sky"] .shop-apply-btn.shop-active-btn { background: #0284c7; }
+      [data-accent="sky"] .tracker-btn:hover { background: #0369a1; }
+      [data-accent="sky"] .tracker-checkbox { accent-color: #0284c7; }
+      [data-accent="sky"] .cl-goal-title { color: #0284c7 !important; }
+      [data-accent="sky"] .tracker-done-badge { color: #0284c7; }
+      /* Gold */
+      [data-accent="gold"] .tracker-btn, [data-accent="gold"] .shop-tab.active, [data-accent="gold"] .shop-buy-btn, [data-accent="gold"] .shop-apply-btn.shop-active-btn { background: #d97706; }
+      [data-accent="gold"] .tracker-btn:hover { background: #b45309; }
+      [data-accent="gold"] .tracker-checkbox { accent-color: #d97706; }
+      [data-accent="gold"] .cl-goal-title { color: #d97706 !important; }
+      [data-accent="gold"] .tracker-done-badge { color: #d97706; }
+      /* Slate */
+      [data-accent="slate"] .tracker-btn, [data-accent="slate"] .shop-tab.active, [data-accent="slate"] .shop-buy-btn, [data-accent="slate"] .shop-apply-btn.shop-active-btn { background: #475569; }
+      [data-accent="slate"] .tracker-btn:hover { background: #334155; }
+      [data-accent="slate"] .tracker-checkbox { accent-color: #475569; }
+      [data-accent="slate"] .cl-goal-title { color: #475569 !important; }
+      [data-accent="slate"] .tracker-done-badge { color: #475569; }
+
+      /* ── Accent & Extra shop previews ── */
+      .shop-preview-accent { height: 76px; background: #f8fafc; display: flex; align-items: center; justify-content: center; }
+      .accent-demo { width: 74px; height: 50px; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; }
+      .accent-demo-text { color: #fff; font-size: 20px; font-weight: 800; line-height: 1; }
+      .accent-demo-bar { height: 4px; width: 42px; background: rgba(255,255,255,0.55); border-radius: 2px; }
+      .shop-preview-extra { height: 76px; background: linear-gradient(135deg,#fef9c3,#fde68a); display: flex; align-items: center; justify-content: center; font-size: 34px; }
+
+      /* ── Pomodoro Timer ── */
+      #pomo-section { max-width: 640px; margin: 28px auto 0; padding: 0 16px 28px; border-bottom: 1px solid #e2e8f0; }
+      .pomo-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+      .pomo-header h2 { margin: 0; font-size: 20px; }
+      .pomo-settings { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 16px 18px; margin-bottom: 20px; }
+      .pomo-settings.hidden { display: none; }
+      .pomo-settings-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; margin-bottom: 12px; }
+      .pomo-settings-label { font-size: 12px; color: #666; font-weight: 600; display: flex; flex-direction: column; gap: 5px; }
+      .pomo-settings input[type="number"] { padding: 7px 10px; border: 1px solid #d0d7e3; border-radius: 6px; font-size: 15px; font-weight: 700; color: #111; width: 100%; box-sizing: border-box; }
+      .pomo-settings-hint { font-size: 12px; color: #aaa; }
+      .pomo-modes { display: flex; gap: 6px; justify-content: center; margin-bottom: 24px; flex-wrap: wrap; }
+      .pomo-mode-btn { padding: 7px 18px; border: 1.5px solid #e2e8f0; background: #fff; border-radius: 20px; font-size: 13px; font-weight: 500; cursor: pointer; color: #666; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+      .pomo-mode-btn:hover { border-color: #cbd5e1; background: #f8fafc; }
+      .pomo-mode-btn[data-mode="work"].active  { background: #ef4444; color: #fff; border-color: #ef4444; }
+      .pomo-mode-btn[data-mode="short"].active { background: #22c55e; color: #fff; border-color: #22c55e; }
+      .pomo-mode-btn[data-mode="long"].active  { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+      .pomo-ring-wrap { position: relative; width: 220px; height: 220px; margin: 0 auto 24px; }
+      .pomo-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+      .pomo-ring-bg   { fill: none; stroke: #e2e8f0; stroke-width: 10; }
+      .pomo-ring-fill { fill: none; stroke: #ef4444; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.4s; }
+      .pomo-ring-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+      .pomo-time { font-size: 52px; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; letter-spacing: -2px; line-height: 1; }
+      .pomo-mode-label { font-size: 13px; color: #888; font-weight: 500; margin-top: 4px; }
+      .pomo-controls { display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 20px; }
+      .pomo-ctrl-btn { border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; padding: 10px 20px; }
+      .pomo-ctrl-primary { background: #ef4444; color: #fff; min-width: 130px; font-size: 16px; padding: 13px 28px; border-radius: 10px; }
+      .pomo-ctrl-primary:hover { background: #dc2626; }
+      .pomo-ctrl-primary.running { background: #f97316; }
+      .pomo-ctrl-primary.running:hover { background: #ea580c; }
+      .pomo-ctrl-secondary { background: #f1f5f9; color: #555; }
+      .pomo-ctrl-secondary:hover { background: #e2e8f0; color: #333; }
+      .pomo-dots { display: flex; gap: 8px; justify-content: center; padding-bottom: 8px; }
+      .pomo-dot { width: 14px; height: 14px; border-radius: 50%; background: #e2e8f0; transition: background 0.3s; }
+      .pomo-dot.done { background: #ef4444; }
+      /* pomo theme overrides */
+      [data-theme="dark"] #pomo-section { border-color: #2d2d4e; }
+      [data-theme="dark"] .pomo-time { color: #e2e8f0; }
+      [data-theme="dark"] .pomo-mode-label { color: #888; }
+      [data-theme="dark"] .pomo-ring-bg { stroke: #2d2d4e; }
+      [data-theme="dark"] .pomo-settings { background: #1e1e2e; border-color: #2d2d4e; }
+      [data-theme="dark"] .pomo-settings-label { color: #aaa; }
+      [data-theme="dark"] .pomo-settings input[type="number"] { background: #252538; border-color: #3d3d5c; color: #e2e8f0; }
+      [data-theme="dark"] .pomo-mode-btn { background: #1e1e2e; border-color: #2d2d4e; color: #aaa; }
+      [data-theme="dark"] .pomo-mode-btn:hover { background: #2d2d4e; }
+      [data-theme="dark"] .pomo-ctrl-secondary { background: #2d2d4e; color: #d4d8e2; }
+      [data-theme="dark"] .pomo-ctrl-secondary:hover { background: #3d3d5e; }
+      [data-theme="dark"] .pomo-dot { background: #2d2d4e; }
+      [data-theme="vaporwave"] #pomo-section { border-color: #330066; }
+      [data-theme="vaporwave"] .pomo-time { color: #ff71ce; }
+      [data-theme="vaporwave"] .pomo-mode-label { color: #b5a9ff; }
+      [data-theme="vaporwave"] .pomo-ring-bg { stroke: #330066; }
+      [data-theme="vaporwave"] .pomo-settings { background: #1e0038; border-color: #6600cc; }
+      [data-theme="vaporwave"] .pomo-settings-label { color: #b5a9ff; }
+      [data-theme="vaporwave"] .pomo-settings input[type="number"] { background: #1a0033; border-color: #6600cc; color: #d4c8ff; }
+      [data-theme="vaporwave"] .pomo-mode-btn { background: #1e0038; border-color: #6600cc; color: #b5a9ff; }
+      [data-theme="vaporwave"] .pomo-mode-btn:hover { background: #330066; }
+      [data-theme="vaporwave"] .pomo-mode-btn[data-mode="work"].active { background: #ff71ce; border-color: #ff71ce; }
+      [data-theme="vaporwave"] .pomo-ctrl-secondary { background: #330066; color: #d4c8ff; }
+      [data-theme="vaporwave"] .pomo-dot { background: #330066; }
+      [data-theme="vaporwave"] .pomo-dot.done { background: #ff71ce; }
+      [data-theme="pastel"] .pomo-mode-btn[data-mode="work"].active { background: #d946a8; border-color: #d946a8; }
+      [data-theme="pastel"] .pomo-ctrl-primary { background: #d946a8; }
+      [data-theme="pastel"] .pomo-ctrl-primary:hover { background: #b8357a; }
+      [data-theme="pastel"] .pomo-ctrl-primary.running { background: #f97316; }
+      [data-theme="pastel"] .pomo-dot.done { background: #d946a8; }
+      [data-theme="nature"] .pomo-mode-btn[data-mode="work"].active { background: #3d8b3d; border-color: #3d8b3d; }
+      [data-theme="nature"] .pomo-ctrl-primary { background: #3d8b3d; }
+      [data-theme="nature"] .pomo-ctrl-primary:hover { background: #2d6b2d; }
+      [data-theme="nature"] .pomo-ctrl-primary.running { background: #f97316; }
+      [data-theme="nature"] .pomo-dot.done { background: #3d8b3d; }
+      [data-theme="beach"] .pomo-ctrl-primary.running { background: #f97316; }
+
+      /* ── Tutorial button ── */
+      .tutorial-btn { height: 36px; padding: 0 14px; border-radius: 18px; border: 2px solid #e2e8f0; background: #fff; color: #555; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; white-space: nowrap; transition: background 0.15s, border-color 0.15s, color 0.15s; }
+      .tutorial-btn:hover { background: #0066ff; color: #fff; border-color: #0066ff; }
+
+      /* ── Calculator button ── */
+      .calc-open-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #e2e8f0; background: #fff; color: #555; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s, border-color 0.15s; }
+      .calc-open-btn:hover { background: #0066ff; border-color: #0066ff; }
+
+      /* ── Calculator modal ── */
+      #calc-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; z-index: 1002; }
+      #calc-modal-overlay.hidden { display: none; }
+      .calc-modal { background: #1c1c1e; border-radius: 20px; width: 280px; overflow: hidden; box-shadow: 0 24px 80px rgba(0,0,0,0.55); }
+      .calc-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px 0; }
+      .calc-header span { color: #888; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; }
+      .calc-close-btn { background: none; border: none; font-size: 18px; cursor: pointer; color: #555; padding: 4px 6px; border-radius: 6px; line-height: 1; }
+      .calc-close-btn:hover { color: #aaa; }
+      .calc-display { padding: 14px 18px 10px; text-align: right; }
+      .calc-expression { font-size: 15px; color: #666; min-height: 22px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .calc-result { font-size: 54px; font-weight: 300; color: #fff; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+      .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #3a3a3c; border-top: 1px solid #3a3a3c; }
+      .calc-btn { padding: 0; aspect-ratio: 1; font-size: 22px; font-weight: 400; border: none; cursor: pointer; transition: filter 0.1s; background: #333335; color: #fff; display: flex; align-items: center; justify-content: center; }
+      .calc-btn:hover { filter: brightness(1.25); }
+      .calc-btn:active { filter: brightness(0.75); }
+      .calc-btn-fn { background: #636366; color: #000; font-weight: 500; }
+      .calc-btn-op { background: #ff9f0a; color: #fff; }
+      .calc-btn-op.active-op { background: #fff; color: #ff9f0a; }
+      .calc-btn-zero { grid-column: span 2; aspect-ratio: auto; justify-content: flex-start; padding: 0 0 0 28px; border-bottom-left-radius: 20px; }
+      .calc-btn:last-child { border-bottom-right-radius: 20px; }
+
+      /* ── Tutorial overlay (4-panel spotlight) ── */
+      .tut-panel { position: fixed; background: rgba(0,0,0,0.6); z-index: 10000; pointer-events: all; transition: all 0.25s ease; }
+      #tut-ring { position: fixed; z-index: 10001; border: 2.5px solid #4d96ff; border-radius: 10px; box-shadow: 0 0 0 4px rgba(77,150,255,0.2); pointer-events: none; transition: all 0.25s ease; }
+
+      /* ── Tutorial tooltip ── */
+      #tutorial-tooltip { position: fixed; z-index: 10002; width: 320px; background: #fff; border-radius: 14px; padding: 22px 22px 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.28); display: none; }
+      #tutorial-tooltip.visible { display: block; }
+      #tut-step-num { font-size: 11px; font-weight: 700; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+      #tut-title { font-size: 16px; font-weight: 700; color: #111; margin: 0 0 9px; }
+      #tut-body { font-size: 13px; color: #555; line-height: 1.6; margin: 0 0 18px; }
+      .tut-actions { display: flex; align-items: center; justify-content: space-between; }
+      #tut-skip { background: none; border: none; font-size: 13px; color: #bbb; cursor: pointer; padding: 0; }
+      #tut-skip:hover { color: #888; }
+      .tut-nav { display: flex; gap: 8px; }
+      #tut-prev, #tut-next { padding: 8px 16px; border: none; border-radius: 7px; font-size: 14px; font-weight: 600; cursor: pointer; }
+      #tut-prev { background: #f1f5f9; color: #555; }
+      #tut-prev:hover { background: #e2e8f0; }
+      #tut-prev:disabled { opacity: 0.3; cursor: default; }
+      #tut-next { background: #0066ff; color: #fff; }
+      #tut-next:hover { background: #0052cc; }
+      /* dark theme */
+      [data-theme="dark"] #tutorial-tooltip { background: #1e1e2e; }
+      [data-theme="dark"] #tut-title { color: #e2e8f0; }
+      [data-theme="dark"] #tut-body { color: #aaa; }
+      [data-theme="dark"] #tut-step-num { color: #555; }
+      [data-theme="dark"] #tut-prev { background: #2d2d4e; color: #d4d8e2; }
+      [data-theme="dark"] #tut-skip { color: #555; }
+      /* vaporwave theme */
+      [data-theme="vaporwave"] #tutorial-tooltip { background: #1e0038; border: 1px solid #6600cc; }
+      [data-theme="vaporwave"] #tut-title { color: #ff71ce; }
+      [data-theme="vaporwave"] #tut-body { color: #b5a9ff; }
+      [data-theme="vaporwave"] #tut-prev { background: #330066; color: #d4c8ff; }
+
+      /* ── Confetti ── */
+      @keyframes confetti-fall {
+        0%   { transform: translateY(-20px) rotate(0deg);    opacity: 1; }
+        80%  { opacity: 1; }
+        100% { transform: translateY(105vh) rotate(720deg);  opacity: 0; }
+      }
+      .confetti-piece { position: absolute; top: -10px; animation: confetti-fall linear forwards; }
+    </style>
+  </head>
+  <body>
+    <div id="bg-overlay"></div>
+    <div class="topbar">
+      <h1>New Year Tracker</h1>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="color-picker-wrap">
+          <label for="bg-color-picker">Background</label>
+          <input type="color" id="bg-color-picker" title="Change background color">
+        </div>
+        <button class="shop-open-btn" id="shop-open-btn">🛒 Shop</button>
+        <button class="tutorial-btn" id="tutorial-open-btn" title="How it works">Tutorial For You</button>
+        <button class="calc-open-btn" id="calc-open-btn" title="Calculator">🧮</button>
+        <div id="trophy-display" style="display:none;align-items:center;gap:4px;background:#fef9c3;border:1px solid #fde047;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600;color:#854d0e;cursor:default;"></div>
+        <div class="points-badge"><span class="points-icon">⭐</span><span id="points-display">0</span> pts</div>
+        <span style="font-size:14px;color:#555;">👋 <%= user.username %></span>
+        <form method="POST" action="/logout" style="margin:0;">
+          <button type="submit" class="tracker-btn tracker-btn-sm" style="background:#e5e7eb;color:#333;">Logout</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Pomodoro Timer -->
+    <div id="pomo-section">
+      <div class="pomo-header">
+        <h2>🍅 Pomodoro</h2>
+        <button class="tracker-btn-icon" id="pomo-settings-btn" title="Timer settings" style="font-size:18px;">⚙️</button>
+      </div>
+
+      <div id="pomo-settings-panel" class="pomo-settings hidden">
+        <div class="pomo-settings-grid">
+          <label class="pomo-settings-label">Focus (min)
+            <input type="number" id="pomo-work-input" min="1" max="90" value="25">
+          </label>
+          <label class="pomo-settings-label">Short break (min)
+            <input type="number" id="pomo-short-input" min="1" max="30" value="5">
+          </label>
+          <label class="pomo-settings-label">Long break (min)
+            <input type="number" id="pomo-long-input" min="1" max="60" value="15">
+          </label>
+          <label class="pomo-settings-label">Sessions until long break
+            <input type="number" id="pomo-interval-input" min="2" max="8" value="4">
+          </label>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button class="tracker-btn tracker-btn-sm" id="pomo-save-btn">Save</button>
+          <span class="pomo-settings-hint">Saving resets the current timer.</span>
+        </div>
+      </div>
+
+      <div class="pomo-modes">
+        <button class="pomo-mode-btn active" data-mode="work">Focus</button>
+        <button class="pomo-mode-btn" data-mode="short">Short Break</button>
+        <button class="pomo-mode-btn" data-mode="long">Long Break</button>
+      </div>
+
+      <div class="pomo-ring-wrap">
+        <svg class="pomo-ring" viewBox="0 0 200 200">
+          <circle class="pomo-ring-bg" cx="100" cy="100" r="88"/>
+          <circle class="pomo-ring-fill" id="pomo-ring-fill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="pomo-ring-inner">
+          <div id="pomo-time" class="pomo-time">25:00</div>
+          <div id="pomo-mode-label" class="pomo-mode-label">Focus</div>
+        </div>
+      </div>
+
+      <div class="pomo-controls">
+        <button class="pomo-ctrl-btn pomo-ctrl-secondary" id="pomo-reset-btn">↩ Reset</button>
+        <button class="pomo-ctrl-btn pomo-ctrl-primary" id="pomo-start-btn">▶ Start</button>
+        <button class="pomo-ctrl-btn pomo-ctrl-secondary" id="pomo-skip-btn">⏭ Skip</button>
+      </div>
+
+      <div id="pomo-dots" class="pomo-dots"></div>
+    </div>
+
+    <div class="tracker-wrap">
+      <h2>My Goals & Tasks</h2>
+
+      <div class="tracker-add-goal-row">
+        <input class="tracker-input" type="text" id="goal-input" placeholder="Enter a new goal…">
+        <input class="tracker-date-input" type="date" id="goal-deadline" title="Goal deadline (optional)">
+        <button class="tracker-btn" id="add-goal-btn">Add Goal</button>
+      </div>
+
+      <div id="goal-list"></div>
+      <div id="checklist-section"></div>
+    </div>
+
+    <!-- Completion prompt modal -->
+    <div id="tracker-modal-overlay" class="hidden">
+      <div class="tracker-modal">
+        <h3>Did you complete the task?</h3>
+        <p class="tracker-modal-task" id="tracker-modal-task-name"></p>
+        <div class="tracker-modal-actions">
+          <button class="tracker-btn" id="tracker-modal-yes">Yes</button>
+          <button class="tracker-btn tracker-btn-no" id="tracker-modal-no">No</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corner pet -->
+    <div id="corner-pet">
+      <div id="pet-bubble">Hello! 👋</div>
+      <img id="pet-emoji" class="idle" src="/pet-cat.svg" alt="pet">
+      <span id="pet-toggle">switch pet</span>
+    </div>
+
+    <!-- Reward shop modal -->
+    <div id="shop-modal-overlay" class="hidden">
+      <div class="shop-modal">
+        <div class="shop-modal-header">
+          <h2>🛒 Reward Shop</h2>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span class="shop-modal-pts">⭐ <span id="shop-pts-display">0</span> pts</span>
+            <button class="shop-close-btn" id="shop-close-btn">✕</button>
+          </div>
+        </div>
+        <div class="shop-tabs">
+          <button class="shop-tab active" data-tab="bg">🌅 Backgrounds</button>
+          <button class="shop-tab" data-tab="pet">🐾 Animals</button>
+          <button class="shop-tab" data-tab="accent">🎨 Colors</button>
+          <button class="shop-tab" data-tab="theme">✨ Themes</button>
+          <button class="shop-tab" data-tab="extra">🎁 Extras</button>
+        </div>
+        <div id="shop-items"></div>
+      </div>
+    </div>
+
+    <!-- Calculator modal -->
+    <div id="calc-modal-overlay" class="hidden">
+      <div class="calc-modal">
+        <div class="calc-header">
+          <span>CALCULATOR</span>
+          <button class="calc-close-btn" id="calc-close-btn">✕</button>
+        </div>
+        <div class="calc-display">
+          <div class="calc-expression" id="calc-expression"></div>
+          <div class="calc-result" id="calc-result">0</div>
+        </div>
+        <div class="calc-buttons">
+          <button class="calc-btn calc-btn-fn" data-action="clear">C</button>
+          <button class="calc-btn calc-btn-fn" data-action="sign">±</button>
+          <button class="calc-btn calc-btn-fn" data-action="percent">%</button>
+          <button class="calc-btn calc-btn-op" data-action="op" data-op="÷">÷</button>
+          <button class="calc-btn" data-action="num" data-val="7">7</button>
+          <button class="calc-btn" data-action="num" data-val="8">8</button>
+          <button class="calc-btn" data-action="num" data-val="9">9</button>
+          <button class="calc-btn calc-btn-op" data-action="op" data-op="×">×</button>
+          <button class="calc-btn" data-action="num" data-val="4">4</button>
+          <button class="calc-btn" data-action="num" data-val="5">5</button>
+          <button class="calc-btn" data-action="num" data-val="6">6</button>
+          <button class="calc-btn calc-btn-op" data-action="op" data-op="−">−</button>
+          <button class="calc-btn" data-action="num" data-val="1">1</button>
+          <button class="calc-btn" data-action="num" data-val="2">2</button>
+          <button class="calc-btn" data-action="num" data-val="3">3</button>
+          <button class="calc-btn calc-btn-op" data-action="op" data-op="+">+</button>
+          <button class="calc-btn calc-btn-zero" data-action="num" data-val="0">0</button>
+          <button class="calc-btn" data-action="decimal">.</button>
+          <button class="calc-btn calc-btn-op" data-action="equals">=</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="confetti-container" style="position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;"></div>
+    <div id="points-toast"></div>
+    <script src="/tracker.js"></script>
+    <script src="/pomo.js"></script>
+    <script src="/tutorial.js"></script>
+    <script>
+    // ── Calculator ──────────────────────────────────────────────────────────────
+    (function () {
+      const overlay  = document.getElementById('calc-modal-overlay');
+      const openBtn  = document.getElementById('calc-open-btn');
+      const closeBtn = document.getElementById('calc-close-btn');
+      const resultEl = document.getElementById('calc-result');
+      const exprEl   = document.getElementById('calc-expression');
+
+      let display          = '0';
+      let operand          = null;
+      let operator         = null;
+      let waitingForNext   = false;
+
+      function fmt(val) {
+        const s = String(val);
+        return s.length > 12 ? parseFloat(parseFloat(val).toPrecision(9)).toString() : s;
+      }
+
+      function updateDisplay() { resultEl.textContent = fmt(display); }
+
+      function inputNum(v) {
+        if (waitingForNext) { display = v; waitingForNext = false; }
+        else { display = display === '0' ? v : display + v; }
+        updateDisplay();
+      }
+
+      function inputDecimal() {
+        if (waitingForNext) { display = '0.'; waitingForNext = false; }
+        else if (!display.includes('.')) display += '.';
+        updateDisplay();
+      }
+
+      function calc(a, op, b) {
+        a = parseFloat(a); b = parseFloat(b);
+        if (op === '÷') return b !== 0 ? a / b : 'Error';
+        if (op === '×') return a * b;
+        if (op === '−') return a - b;
+        if (op === '+') return a + b;
+        return b;
+      }
+
+      function setActiveOp(op) {
+        document.querySelectorAll('.calc-btn-op').forEach(b =>
+          b.classList.toggle('active-op', b.dataset.op === op)
+        );
+      }
+
+      function handleOp(op) {
+        if (operator && !waitingForNext) {
+          const res = calc(operand, operator, display);
+          display = fmt(res);
+          updateDisplay();
+        }
+        operand = display;
+        operator = op;
+        waitingForNext = true;
+        exprEl.textContent = `${operand} ${op}`;
+        setActiveOp(op);
+      }
+
+      function handleEquals() {
+        if (operator === null) return;
+        const res = calc(operand, operator, display);
+        exprEl.textContent = `${operand} ${operator} ${display} =`;
+        display = fmt(res);
+        updateDisplay();
+        operator = null; operand = null; waitingForNext = true;
+        setActiveOp(null);
+      }
+
+      function handleClear() {
+        display = '0'; operand = null; operator = null; waitingForNext = false;
+        exprEl.textContent = '';
+        setActiveOp(null);
+        updateDisplay();
+      }
+
+      document.querySelectorAll('.calc-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const { action, val, op } = btn.dataset;
+          if (action === 'num')     inputNum(val);
+          if (action === 'decimal') inputDecimal();
+          if (action === 'op')      handleOp(op);
+          if (action === 'equals')  handleEquals();
+          if (action === 'clear')   handleClear();
+          if (action === 'sign') {
+            display = String(-parseFloat(display) || 0);
+            updateDisplay();
+          }
+          if (action === 'percent') {
+            display = String(parseFloat(display) / 100);
+            updateDisplay();
+          }
+        });
+      });
+
+      openBtn.addEventListener('click',  () => overlay.classList.remove('hidden'));
+      closeBtn.addEventListener('click', () => overlay.classList.add('hidden'));
+      overlay.addEventListener('click',  e => { if (e.target === overlay) overlay.classList.add('hidden'); });
+
+      document.addEventListener('keydown', e => {
+        if (overlay.classList.contains('hidden')) return;
+        if (e.key >= '0' && e.key <= '9') { inputNum(e.key); return; }
+        if (e.key === '.')               { inputDecimal(); return; }
+        if (e.key === '+')               { handleOp('+');  return; }
+        if (e.key === '-')               { handleOp('−');  return; }
+        if (e.key === '*')               { handleOp('×');  return; }
+        if (e.key === '/') { e.preventDefault(); handleOp('÷'); return; }
+        if (e.key === 'Enter' || e.key === '=') { handleEquals(); return; }
+        if (e.key === 'Escape')          { overlay.classList.add('hidden'); return; }
+        if (e.key === 'Backspace') {
+          if (!waitingForNext && display.length > 1) display = display.slice(0, -1);
+          else display = '0';
+          updateDisplay();
+        }
+      });
+    })();
+    </script>
+  </body>
+</html>

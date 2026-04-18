@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 130" width="80" height="130">
+  <!-- tail -->
+  <path d="M 52 105 Q 80 88 74 62" stroke="#e8943a" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- body -->
+  <ellipse cx="38" cy="95" rx="22" ry="28" fill="#f4a556"/>
+  <!-- belly -->
+  <ellipse cx="38" cy="97" rx="12" ry="18" fill="#f9d8b8"/>
+  <!-- head -->
+  <circle cx="38" cy="48" r="24" fill="#f4a556"/>
+  <!-- left ear -->
+  <polygon points="18,32 13,10 30,26" fill="#f4a556"/>
+  <!-- right ear -->
+  <polygon points="58,32 63,10 46,26" fill="#f4a556"/>
+  <!-- inner left ear -->
+  <polygon points="19,30 15,14 28,26" fill="#f9c0b0"/>
+  <!-- inner right ear -->
+  <polygon points="57,30 61,14 48,26" fill="#f9c0b0"/>
+  <!-- stripes on head -->
+  <path d="M 30 28 Q 38 24 46 28" stroke="#e08030" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M 28 33 Q 38 28 48 33" stroke="#e08030" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <!-- eyes -->
+  <ellipse cx="30" cy="46" rx="5" ry="6" fill="#1a1a2e"/>
+  <ellipse cx="46" cy="46" rx="5" ry="6" fill="#1a1a2e"/>
+  <!-- iris -->
+  <ellipse cx="30" cy="46" rx="3" ry="5" fill="#4a9e4a"/>
+  <ellipse cx="46" cy="46" rx="3" ry="5" fill="#4a9e4a"/>
+  <!-- pupil -->
+  <ellipse cx="30" cy="46" rx="1.5" ry="4" fill="#1a1a2e"/>
+  <ellipse cx="46" cy="46" rx="1.5" ry="4" fill="#1a1a2e"/>
+  <!-- eye shine -->
+  <circle cx="32" cy="43" r="1.5" fill="white"/>
+  <circle cx="48" cy="43" r="1.5" fill="white"/>
+  <!-- nose -->
+  <polygon points="38,54 35,58 41,58" fill="#e07080"/>
+  <!-- mouth -->
+  <path d="M 35 59 Q 38 63 41 59" stroke="#c05060" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+  <!-- whiskers left -->
+  <line x1="14" y1="53" x2="32" y2="56" stroke="#ccc" stroke-width="1.2"/>
+  <line x1="14" y1="58" x2="32" y2="58" stroke="#ccc" stroke-width="1.2"/>
+  <line x1="16" y1="63" x2="32" y2="60" stroke="#ccc" stroke-width="1.2"/>
+  <!-- whiskers right -->
+  <line x1="62" y1="53" x2="44" y2="56" stroke="#ccc" stroke-width="1.2"/>
+  <line x1="62" y1="58" x2="44" y2="58" stroke="#ccc" stroke-width="1.2"/>
+  <line x1="60" y1="63" x2="44" y2="60" stroke="#ccc" stroke-width="1.2"/>
+  <!-- front paws -->
+  <ellipse cx="28" cy="120" rx="10" ry="7" fill="#f4a556"/>
+  <ellipse cx="48" cy="120" rx="10" ry="7" fill="#f4a556"/>
+  <!-- paw toes -->
+  <ellipse cx="23" cy="122" rx="3" ry="2" fill="#e8943a"/>
+  <ellipse cx="28" cy="124" rx="3" ry="2" fill="#e8943a"/>
+  <ellipse cx="33" cy="122" rx="3" ry="2" fill="#e8943a"/>
+  <ellipse cx="43" cy="122" rx="3" ry="2" fill="#e8943a"/>
+  <ellipse cx="48" cy="124" rx="3" ry="2" fill="#e8943a"/>
+  <ellipse cx="53" cy="122" rx="3" ry="2" fill="#e8943a"/>
+</svg>

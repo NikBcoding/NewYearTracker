@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 130" width="80" height="130">
+  <!-- left ear outer -->
+  <ellipse cx="26" cy="22" rx="10" ry="24" fill="#f0f0f0"/>
+  <!-- right ear outer -->
+  <ellipse cx="54" cy="22" rx="10" ry="24" fill="#f0f0f0"/>
+  <!-- left ear inner -->
+  <ellipse cx="26" cy="23" rx="5.5" ry="18" fill="#ffb3c6"/>
+  <!-- right ear inner -->
+  <ellipse cx="54" cy="23" rx="5.5" ry="18" fill="#ffb3c6"/>
+  <!-- body -->
+  <ellipse cx="38" cy="95" rx="24" ry="28" fill="#f0f0f0"/>
+  <!-- belly -->
+  <ellipse cx="38" cy="98" rx="13" ry="18" fill="#fff"/>
+  <!-- head -->
+  <circle cx="38" cy="52" r="22" fill="#f0f0f0"/>
+  <!-- left cheek blush -->
+  <circle cx="27" cy="58" r="6" fill="#ffb3c6" opacity="0.45"/>
+  <!-- right cheek blush -->
+  <circle cx="49" cy="58" r="6" fill="#ffb3c6" opacity="0.45"/>
+  <!-- left eye -->
+  <circle cx="30" cy="47" r="5" fill="#e8547a"/>
+  <!-- right eye -->
+  <circle cx="46" cy="47" r="5" fill="#e8547a"/>
+  <!-- eye shine left -->
+  <circle cx="31.5" cy="45" r="1.8" fill="white"/>
+  <!-- eye shine right -->
+  <circle cx="47.5" cy="45" r="1.8" fill="white"/>
+  <!-- nose -->
+  <ellipse cx="38" cy="56" rx="3.5" ry="2.5" fill="#ffb3c6"/>
+  <!-- mouth -->
+  <path d="M34.5 58.5 Q38 62.5 41.5 58.5" stroke="#e8547a" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  <!-- front left paw -->
+  <ellipse cx="28" cy="120" rx="10" ry="7" fill="#f0f0f0"/>
+  <!-- front right paw -->
+  <ellipse cx="48" cy="120" rx="10" ry="7" fill="#f0f0f0"/>
+  <!-- paw toes left -->
+  <ellipse cx="23" cy="122" rx="3" ry="2" fill="#ddd"/>
+  <ellipse cx="28" cy="124" rx="3" ry="2" fill="#ddd"/>
+  <ellipse cx="33" cy="122" rx="3" ry="2" fill="#ddd"/>
+  <!-- paw toes right -->
+  <ellipse cx="43" cy="122" rx="3" ry="2" fill="#ddd"/>
+  <ellipse cx="48" cy="124" rx="3" ry="2" fill="#ddd"/>
+  <ellipse cx="53" cy="122" rx="3" ry="2" fill="#ddd"/>
+  <!-- fluffy tail -->
+  <circle cx="62" cy="93" r="10" fill="#fff"/>
+  <circle cx="62" cy="93" r="8" fill="#f0f0f0"/>
+</svg>
