@@ -130,6 +130,7 @@
         text-align: center;
         text-decoration: none;
         margin-top:12px;
+        margin-bottom: 12px;
         padding: 13px;
         border: none;
         border-radius: 8px;
@@ -196,6 +197,13 @@
         opacity: 0;
         animation: twinkle linear infinite;
       }
+
+      .create-link {
+        color: white;
+        font-weight: 700;
+        text-decoration: none;
+      }
+
       @keyframes twinkle {
         0%,100% { opacity: 0; transform: scale(0.8); }
         50%      { opacity: 0.7; transform: scale(1.2); }
@@ -213,38 +221,6 @@
       <div class="branding-sub">Powered by <strong>NANJA Business Inc.</strong></div>
     </div>
 
-    <div class="card">
-      <div class="card-heading">Sign in</div>
-
-      <% if (error) { %>
-        <div class="error"><%= error %></div>
-      <% } %>
-
-      <form method="POST" action="/login">
-        <label>Username
-          <input name="username" placeholder="Enter username" required autofocus>
-        </label>
-
-        <label>Password
-          <input name="password" type="password" placeholder="Enter password" required>
-        </label>
-
-        <button type="submit">Sign in</button>
-      </form>
-        
-      <a class= "google-btn" href='/auth/google'>Sign in with Google →</a>
-
-        <p class="muted">
-          Don't have an account? 
-          <a class="create-link" href="/register">Create one</a>
-        </p>
-      
-
-      <!-- <p class="muted">Demo: <strong>alice</strong> / <strong>1234</strong></p> -->
-      <!-- <button type="signWithGoogle" onclick="window.location.href='/auth/google'">
-        Sign in with Google
-        </button> -->
-    </div>  
 
     <script>
       // Sprinkle twinkling stars in the background
@@ -265,3 +241,44 @@
     </script>
   </body>
 </html>
+
+
+<div class="card">
+  <div class="card-heading">Create Account</div>
+
+  <% if (error) { %>
+    <div class="error"><%= error %></div>
+  <% } %>
+
+  <form method="POST" action="/register">
+
+    <label> Name
+        <input name="name" type="name" placeholder="Enter your name" required autofocus>
+    </label>
+
+
+    <label>Username
+      <input name="username" placeholder="Create username" required autofocus>
+    </label>
+
+    <label>Password
+      <input name="password" type="password" placeholder="Create password" required>
+    </label>
+
+     <label>Confirm Password
+      <input name="confirmPassword" type="password" placeholder="Confirm password" required>
+    </label>
+
+    <button type="submit">Sign up</button>
+
+  </form>
+
+  <a class="google-btn" href="/auth/google">
+    Sign up with Google →
+  </a>
+
+  <p class="muted">
+    Already have an account?
+    <a class="create-link" href="/login">Sign in</a>
+  </p>
+</div>
