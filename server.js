@@ -122,25 +122,37 @@ app.get('/auth/google/callback',
 });
 
 app.post('/logout', (req, res, next) => {
-  req.session.user = null; // manual username/password login
+  req.logout(function(err) {
+    if (err) return next(err);
+  
+  req.session.destroy((err) => {
+    if (err) return next(err);
 
-  if(req.isAuthenticated && req.isAuthenticated()) {
-    // Passport logout
-    req.logout(function(err) {
-      if (err) return next(err);
-
-      req.session.destroy(() => {
-        res.clearCookie('connect.sid'); // Clear the session cookie
-        res.redirect('/login');
-      });
-    });
-  } else {
-    req.session.destroy(() => {
-      res.clearCookie('connect.sid'); // Clear the session cookie
-      res.redirect('/login');
-    });
-  }
+     res.clearCookie('connect.sid'); // Clear the session cookie
+     res.redirect('/login');
+   });
   });
+});
+
+// app.get('/logout', (req, res, next) => {
+
+//   if(req.isAuthenticated && req.isAuthenticated()) {
+//     // Passport logout
+//     req.logout(function(err) {
+//       if (err) return next(err);
+
+//       req.session.destroy(() => {
+//         res.clearCookie('connect.sid'); // Clear the session cookie
+//         res.redirect('/login');
+//       });
+//     });
+//   } else {
+//     req.session.destroy(() => {
+//       res.clearCookie('connect.sid'); // Clear the session cookie
+//       res.redirect('/login');
+//     });
+//   }
+//   });
 
   app.get('/dashboard', requireAuth, (req, res) => {
     const user = req.session.user && req.session.user || req.user; // Support both session and passport user
