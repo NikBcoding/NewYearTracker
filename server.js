@@ -174,6 +174,9 @@ app.post('/login', async (req, res) => {
   return res.redirect('/dashboard');
 });
 
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
