@@ -1,5 +1,11 @@
 require('dotenv').config();
 
+const mongoose = require('mongoose');
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.log(err));
+
+
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -116,6 +122,11 @@ function requireAuth(req, res, next) {
 app.get('/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/login' }), 
   (req, res) => {
+
+    if (req.user) {
+      req.user.points = (req.user.points || 0) + 1; // Ensure points are initialized
+      req.session.user = req.user; // Store user in session for dashboard access
+    }
     //res.session.user = req.user
     res.redirect('/dashboard');
   // Successful authentication
