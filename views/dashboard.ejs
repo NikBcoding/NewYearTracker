@@ -113,8 +113,64 @@
       #pet-emoji.shake  { animation: pet-shake  0.4s ease forwards; }
 
       /* ── Shop button ── */
-      .shop-open-btn { padding: 10px 16px; background: #6d28d9; color: #fff; border: none; border-radius: 20px; cursor: pointer; font-size: 16px; font-weight: 600; white-space: nowrap; }
-      .shop-open-btn:hover { background: #5b21b6; }
+      .shop-open-btn { 
+        padding: 8px 16px; 
+        background: skyblue; 
+        color: #fff; 
+        border: none; 
+        border-radius: 20px; 
+        cursor: pointer; 
+        font-size: 14px; 
+        font-weight: 600; 
+        white-space: nowrap; 
+      }
+      .shop-open-btn:hover { 
+        background: #0066ff; 
+        color: #fff; 
+        border-color: #0066ff;  
+      }
+
+      /* ── Tutorial button ── */
+      .tutorial-btn { 
+        height: 36px; 
+        padding: 0 14px; 
+        border-radius: 18px; 
+        border: 2px solid #e2e8f0; 
+        background: #fff; 
+        color: #555; 
+        font-size: 14px; 
+        font-weight: 600; 
+        cursor: pointer; 
+        display: flex; 
+        align-items: center; 
+        justify-content: center; 
+        flex-shrink: 0; 
+        white-space: nowrap; 
+        transition: background 0.15s, border-color 0.15s, color 0.15s; 
+      }
+      .tutorial-btn:hover { 
+        background: #0066ff; 
+        color: #fff; 
+        border-color: #0066ff; 
+      }
+
+      /* ── Logout button ── */
+      .tracker-btn {
+        padding: 8px 16px; 
+        border-radius: 20px; 
+        border: none; 
+        background: #e5e7eb; 
+        color: #333; 
+        font-size: 14px; 
+        font-weight: 600; 
+        cursor: pointer; 
+      }
+
+      .tracker-btn:hover { 
+        background: #0066ff; 
+        color: #fff; 
+        border-color: #0066ff; 
+      }
 
       /* ── Shop modal ── */
       #shop-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1001; padding: 16px; }
@@ -441,9 +497,6 @@
       [data-theme="nature"] .pomo-dot.done { background: #3d8b3d; }
       [data-theme="beach"] .pomo-ctrl-primary.running { background: #f97316; }
 
-      /* ── Tutorial button ── */
-      .tutorial-btn { height: 36px; padding: 0 14px; border-radius: 18px; border: 2px solid #e2e8f0; background: #fff; color: #555; font-size: 13px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; white-space: nowrap; transition: background 0.15s, border-color 0.15s, color 0.15s; }
-      .tutorial-btn:hover { background: #0066ff; color: #fff; border-color: #0066ff; }
 
       /* ── Calculator button ── */
       .calc-open-btn { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #e2e8f0; background: #fff; color: #555; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s, border-color 0.15s; }
@@ -526,9 +579,9 @@
         <button class="calc-open-btn" id="calc-open-btn" title="Calculator">🧮</button>
         <div id="trophy-display" style="display:none;align-items:center;gap:4px;background:#fef9c3;border:1px solid #fde047;border-radius:20px;padding:4px 12px;font-size:13px;font-weight:600;color:#854d0e;cursor:default;"></div>
         <div class="points-badge"><span class="points-icon">⭐</span><span id="points-display"></span> pts</div>
-        <span style="font-size:14px;color:#555;">👋 <%= user.name || user.username %></span>
+        <span style="font-size:22px;color:#555;">👋 <%= user.name || user.username %></span>
         <form method="POST" action="/logout" style="margin:0;">
-          <button type="submit" class="tracker-btn tracker-btn-sm" style="background:#e5e7eb;color:#333;">Logout</button>
+          <button type="submit" class="tracker-btn tracker-btn-sm" >Logout</button>
         </form>
       </div>
     </div>
