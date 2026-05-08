@@ -252,6 +252,36 @@
       justify-content: center;
     }
 
+  /* ── Pet Health ── */
+  .pet-health-wrap {
+    width: 90px;
+    margin-top: 6px;
+    text-align: center;
+  }
+
+  .pet-health-label {
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .pet-health-bar {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+  }
+
+  #pet-health-fill {
+    height: 100%;
+    width: 100%;
+    background: #22c55e;
+    border-radius: 999px;
+    transition: width 0.3s ease;
+  }
+
       /* ── Themes ── */
       [data-theme="dark"] body { background: #0f0f1a; color: #e2e8f0; }
       [data-theme="dark"] .topbar { background: #1e1e2e !important; border-color: #2d2d4e !important; }
@@ -670,6 +700,14 @@
       <div id="pet-bubble">Hello! 👋</div>
       <img id="pet-emoji" class="idle" src="/pet-cat.svg" alt="pet">
       <span id="pet-toggle">switch pet</span>
+
+      <!-- Pet Health -->
+      <div class="pet-health-wrap">
+        <div class="pet-health-label">Health</div>
+        <div class="pet-health-bar">
+          <div id="pet-health-fill"></div>
+        </div>
+      </div>
     </div>
 
     <!-- Reward shop modal -->
@@ -736,6 +774,30 @@
     <script>
     // ── Calculator ──────────────────────────────────────────────────────────────
     (function () {
+
+      let petHealth = 100;
+      let lastTimerUse = Date.now();
+
+      function renderPetHealth() {
+        console.log("health:", petHealth);
+    }
+
+      function updatePetHealth() {
+        const now = Date.now();
+        const minutesAway = (now - lastTimerUse) / 60000;
+
+     petHealth = Math.max(0, 100 - Math.floor(minutesAway));
+
+    renderPetHealth();
+}
+
+function feedPet() {
+   petHealth = Math.min(100, petHealth + 20);
+   renderPetHealth();
+}
+
+setInterval(updatePetHealth, 60000);
+
       const overlay  = document.getElementById('calc-modal-overlay');
       const openBtn  = document.getElementById('calc-open-btn');
       const closeBtn = document.getElementById('calc-close-btn');

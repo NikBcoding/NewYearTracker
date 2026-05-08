@@ -10,48 +10,48 @@ const ACCENT_KEY  = 'nyt_accent';
 // ── Shop catalogue ────────────────────────────────────────────────────────────
 const SHOP_ITEMS = [
   // Backgrounds — originals
-  { id: 'bg_sunset',    type: 'bg', label: 'Sunset',         price: 15, value: 'linear-gradient(135deg,#ff9966 0%,#ff5e62 100%)',                   emoji: '🌅' },
-  { id: 'bg_ocean',     type: 'bg', label: 'Ocean',          price: 15, value: 'linear-gradient(180deg,#00c6ff 0%,#0072ff 100%)',                   emoji: '🌊' },
-  { id: 'bg_blossom',   type: 'bg', label: 'Cherry Blossom', price: 20, value: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 50%,#ff9a9e 100%)',       emoji: '🌸' },
-  { id: 'bg_forest',    type: 'bg', label: 'Forest',         price: 20, value: 'linear-gradient(135deg,#56ab2f 0%,#a8e063 100%)',                   emoji: '🌿' },
+  { id: 'bg_sunset',    type: 'bg', label: 'Sunset',         price: 25, value: 'linear-gradient(135deg,#ff9966 0%,#ff5e62 100%)',                   emoji: '🌅' },
+  { id: 'bg_ocean',     type: 'bg', label: 'Ocean',          price: 25, value: 'linear-gradient(180deg,#00c6ff 0%,#0072ff 100%)',                   emoji: '🌊' },
+  { id: 'bg_blossom',   type: 'bg', label: 'Cherry Blossom', price: 25, value: 'linear-gradient(135deg,#ffecd2 0%,#fcb69f 50%,#ff9a9e 100%)',       emoji: '🌸' },
+  { id: 'bg_forest',    type: 'bg', label: 'Forest',         price: 25, value: 'linear-gradient(135deg,#56ab2f 0%,#a8e063 100%)',                   emoji: '🌿' },
   { id: 'bg_aurora',    type: 'bg', label: 'Aurora',         price: 25, value: 'linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%)',       emoji: '✨' },
-  { id: 'bg_midnight',  type: 'bg', label: 'Midnight',       price: 30, value: 'linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)',       emoji: '🌙' },
+  { id: 'bg_midnight',  type: 'bg', label: 'Midnight',       price: 25, value: 'linear-gradient(135deg,#0f0c29 0%,#302b63 50%,#24243e 100%)',       emoji: '🌙' },
   // Backgrounds — new
-  { id: 'bg_mint',      type: 'bg', label: 'Mint Breeze',    price: 15, value: 'linear-gradient(135deg,#84fab0 0%,#8fd3f4 100%)',                   emoji: '🫧' },
-  { id: 'bg_lavender',  type: 'bg', label: 'Lavender',       price: 15, value: 'linear-gradient(135deg,#e0c3fc 0%,#8ec5fc 100%)',                   emoji: '💜' },
-  { id: 'bg_candy',     type: 'bg', label: 'Cotton Candy',   price: 20, value: 'linear-gradient(135deg,#f093fb 0%,#f5576c 50%,#fda085 100%)',       emoji: '🍬' },
-  { id: 'bg_deepblue',  type: 'bg', label: 'Deep Blue',      price: 20, value: 'linear-gradient(135deg,#1e3c72 0%,#2a5298 100%)',                   emoji: '🔵' },
-  { id: 'bg_goldhour',  type: 'bg', label: 'Golden Hour',    price: 20, value: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',                   emoji: '☀️' },
-  { id: 'bg_galaxy',    type: 'bg', label: 'Galaxy',         price: 40, value: 'linear-gradient(135deg,#0f0c29 0%,#302b63 33%,#24243e 66%,#7b2d8b 100%)', emoji: '🌌' },
+  { id: 'bg_mint',      type: 'bg', label: 'Mint Breeze',    price: 25, value: 'linear-gradient(135deg,#84fab0 0%,#8fd3f4 100%)',                   emoji: '🫧' },
+  { id: 'bg_lavender',  type: 'bg', label: 'Lavender',       price: 25, value: 'linear-gradient(135deg,#e0c3fc 0%,#8ec5fc 100%)',                   emoji: '💜' },
+  { id: 'bg_candy',     type: 'bg', label: 'Cotton Candy',   price: 25, value: 'linear-gradient(135deg,#f093fb 0%,#f5576c 50%,#fda085 100%)',       emoji: '🍬' },
+  { id: 'bg_deepblue',  type: 'bg', label: 'Deep Blue',      price: 25, value: 'linear-gradient(135deg,#1e3c72 0%,#2a5298 100%)',                   emoji: '🔵' },
+  { id: 'bg_goldhour',  type: 'bg', label: 'Golden Hour',    price: 25, value: 'linear-gradient(135deg,#f7971e 0%,#ffd200 100%)',                   emoji: '☀️' },
+  { id: 'bg_galaxy',    type: 'bg', label: 'Galaxy',         price: 25, value: 'linear-gradient(135deg,#0f0c29 0%,#302b63 33%,#24243e 66%,#7b2d8b 100%)', emoji: '🌌' },
 
   // Animals
-  { id: 'pet_bunny', type: 'pet', label: 'Bunny', price: 25, value: 'bunny', emoji: '🐰' },
-  { id: 'pet_fox',   type: 'pet', label: 'Fox',   price: 30, value: 'fox',   emoji: '🦊' },
-  { id: 'pet_bear',  type: 'pet', label: 'Bear',  price: 35, value: 'bear',  emoji: '🐻' },
+  { id: 'pet_bunny', type: 'pet', label: 'Bunny', price: 50, value: 'bunny', emoji: '🐰' },
+  { id: 'pet_fox',   type: 'pet', label: 'Fox',   price: 50, value: 'fox',   emoji: '🦊' },
+  { id: 'pet_bear',  type: 'pet', label: 'Bear',  price: 50, value: 'bear',  emoji: '🐻' },
 
   // Accent colors
-  { id: 'accent_ruby',      type: 'accent', label: 'Ruby Red',   price: 20, value: 'ruby',      color: '#dc2626', emoji: '🔴' },
-  { id: 'accent_violet',    type: 'accent', label: 'Violet',     price: 20, value: 'violet',    color: '#7c3aed', emoji: '🟣' },
-  { id: 'accent_tangerine', type: 'accent', label: 'Tangerine',  price: 20, value: 'tangerine', color: '#ea580c', emoji: '🟠' },
+  { id: 'accent_ruby',      type: 'accent', label: 'Ruby Red',   price: 25, value: 'ruby',      color: '#dc2626', emoji: '🔴' },
+  { id: 'accent_violet',    type: 'accent', label: 'Violet',     price: 25, value: 'violet',    color: '#7c3aed', emoji: '🟣' },
+  { id: 'accent_tangerine', type: 'accent', label: 'Tangerine',  price: 25, value: 'tangerine', color: '#ea580c', emoji: '🟠' },
   { id: 'accent_rose',      type: 'accent', label: 'Rose',       price: 25, value: 'rose',      color: '#e11d7a', emoji: '🌹' },
-  { id: 'accent_emerald',   type: 'accent', label: 'Emerald',    price: 20, value: 'emerald',   color: '#059669', emoji: '💚' },
-  { id: 'accent_sky',       type: 'accent', label: 'Sky Blue',   price: 20, value: 'sky',       color: '#0284c7', emoji: '🩵' },
+  { id: 'accent_emerald',   type: 'accent', label: 'Emerald',    price: 25, value: 'emerald',   color: '#059669', emoji: '💚' },
+  { id: 'accent_sky',       type: 'accent', label: 'Sky Blue',   price: 25, value: 'sky',       color: '#0284c7', emoji: '🩵' },
   { id: 'accent_gold',      type: 'accent', label: 'Gold',       price: 25, value: 'gold',      color: '#d97706', emoji: '⭐' },
-  { id: 'accent_slate',     type: 'accent', label: 'Slate Gray', price: 15, value: 'slate',     color: '#475569', emoji: '🩶' },
+  { id: 'accent_slate',     type: 'accent', label: 'Slate Gray', price: 25, value: 'slate',     color: '#475569', emoji: '🩶' },
 
   // Themes — originals
-  { id: 'theme_dark',      type: 'theme', label: 'Dark Mode',    price: 40, value: 'dark',      emoji: '🌑' },
-  { id: 'theme_pastel',    type: 'theme', label: 'Pastel Dream', price: 30, value: 'pastel',    emoji: '🎀' },
-  { id: 'theme_nature',    type: 'theme', label: 'Nature',       price: 35, value: 'nature',    emoji: '🌱' },
+  { id: 'theme_dark',      type: 'theme', label: 'Dark Mode',    price: 50, value: 'dark',      emoji: '🌑' },
+  { id: 'theme_pastel',    type: 'theme', label: 'Pastel Dream', price: 50, value: 'pastel',    emoji: '🎀' },
+  { id: 'theme_nature',    type: 'theme', label: 'Nature',       price: 50, value: 'nature',    emoji: '🌱' },
   // Themes — new
-  { id: 'theme_candy',     type: 'theme', label: 'Candy',        price: 35, value: 'candy',     emoji: '🍭' },
-  { id: 'theme_vaporwave', type: 'theme', label: 'Vaporwave',    price: 45, value: 'vaporwave', emoji: '🌈' },
-  { id: 'theme_beach',     type: 'theme', label: 'Beach',        price: 35, value: 'beach',     emoji: '🏖️' },
+  { id: 'theme_candy',     type: 'theme', label: 'Candy',        price: 50, value: 'candy',     emoji: '🍭' },
+  { id: 'theme_vaporwave', type: 'theme', label: 'Vaporwave',    price: 50, value: 'vaporwave', emoji: '🌈' },
+  { id: 'theme_beach',     type: 'theme', label: 'Beach',        price: 50, value: 'beach',     emoji: '🏖️' },
 
   // Extras
   { id: 'extra_confetti', type: 'extra', label: 'Confetti Burst', price: 50, value: 'confetti', emoji: '🎊' },
-  { id: 'extra_sound',    type: 'extra', label: 'Sound Effects',  price: 35, value: 'sound',    emoji: '🔔' },
-  { id: 'extra_trophy',   type: 'extra', label: 'Trophy Shelf',   price: 30, value: 'trophy',   emoji: '🏆' },
+  { id: 'extra_sound',    type: 'extra', label: 'Sound Effects',  price: 50, value: 'sound',    emoji: '🔔' },
+  { id: 'extra_trophy',   type: 'extra', label: 'Trophy Shelf',   price: 50, value: 'trophy',   emoji: '🏆' },
 ];
 
 // ── Shop ownership helpers ─────────────────────────────────────────────────────
@@ -217,15 +217,39 @@ function renderChecklist() {
 function showCompletionPrompt(gi, ti) {
   const overlay  = document.getElementById('tracker-modal-overlay');
   const taskName = goals[gi].tasks[ti].name;
+
   document.getElementById('tracker-modal-task-name').textContent = `"${taskName}"`;
   overlay.classList.remove('hidden');
 
   document.getElementById('tracker-modal-yes').onclick = () => {
-    goals[gi].tasks[ti].done = true;
+    const goal = goals[gi];
+
+    // Check if the goal was already complete before this task
+    const wasGoalComplete = goal.tasks.length > 0 && goal.tasks.every(t => t.done);
+
+    // Mark this task as complete
+    goal.tasks[ti].done = true;
+
+    // Check if this task completed the whole main goal
+    const isGoalComplete = goal.tasks.length > 0 && goal.tasks.every(t => t.done);
+
+    // Reward main goal only once
+    const shouldRewardGoal = !wasGoalComplete && isGoalComplete && !goal.goalRewarded;
+
+    if (shouldRewardGoal) {
+      goal.goalRewarded = true;
+    }
+
     saveData(goals);
     overlay.classList.add('hidden');
     render();
-    addPoints(3, 'Task completed');
+
+    addPoints(5, 'Task completed');
+
+    if (shouldRewardGoal) {
+      addPoints(50, 'Main goal completed! 🎉');
+    }
+
     triggerExtras();
   };
 
@@ -298,7 +322,14 @@ document.getElementById('add-goal-btn').addEventListener('click', () => {
   const dateInput = document.getElementById('goal-deadline');
   const title     = input.value.trim();
   if (!title) return;
-  goals.push({ title, tasks: [], deadline: dateInput.value || null });
+
+  goals.push({
+  title,
+  tasks: [],
+  deadline: dateInput.value || null,
+  goalRewarded: false
+});
+
   saveData(goals);
   input.value     = '';
   dateInput.value = '';
