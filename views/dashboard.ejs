@@ -477,7 +477,7 @@
       .pomo-ring-fill { fill: none; stroke: #ef4444; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear, stroke 0.4s; }
       .pomo-ring-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
       .pomo-time { font-size: 52px; font-weight: 700; color: #111; font-variant-numeric: tabular-nums; letter-spacing: -2px; line-height: 1; }
-      .pomo-mode-label { font-size: 13px; color: #888; font-weight: 500; margin-top: 4px; }
+      .pomo-mode-label { background: #f1f5f9; border-radius: 14px; padding: 1px 4px ; font-size: 16px; color: #888; font-weight: 500; margin-top: 4px; }
       .pomo-controls { display: flex; gap: 12px; justify-content: center; align-items: center; margin-bottom: 20px; }
       .pomo-ctrl-btn { border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.15s; padding: 10px 20px; }
       .pomo-ctrl-primary { background: #ef4444; color: #fff; min-width: 130px; font-size: 16px; padding: 13px 28px; border-radius: 10px; }
@@ -726,6 +726,7 @@
           <button class="shop-tab" data-tab="accent">🎨 Colors</button>
           <button class="shop-tab" data-tab="theme">✨ Themes</button>
           <button class="shop-tab" data-tab="extra">🎁 Extras</button>
+          <button class="shop-tab" data-tab="food">🍖 Food</button>
         </div>
         <div id="shop-items"></div>
       </div>
@@ -779,24 +780,40 @@
       let lastTimerUse = Date.now();
 
       function renderPetHealth() {
-        console.log("health:", petHealth);
-    }
+        const fill = document.getElementById('pet-health-fill');
+        fill.style.width = petHealth + '%';
+        if (petHealth > 60) {
+          fill.style.background = '#22c55e';
+        } else if (petHealth > 30) {
+          fill.style.background = '#eab308';
+        } else {
+          fill.style.background = '#ef4444';
+        }
+      }
 
       function updatePetHealth() {
         const now = Date.now();
         const minutesAway = (now - lastTimerUse) / 60000;
 
-     petHealth = Math.max(0, 100 - Math.floor(minutesAway));
+        const drop = Math.floor(minutesAway);
+        if (drop > 0) {
+          petHealth = Math.max(0, petHealth - drop);
+          lastTimerUse = now;
+        }
 
     renderPetHealth();
 }
 
-function feedPet() {
-   petHealth = Math.min(100, petHealth + 20);
+function feedPet(amount = 100) {
+   petHealth = Math.min(100, petHealth + amount);
+   lastTimerUse = Date.now();
    renderPetHealth();
 }
 
+window.feedPet = feedPet;
+
 setInterval(updatePetHealth, 60000);
+renderPetHealth();
 
       const overlay  = document.getElementById('calc-modal-overlay');
       const openBtn  = document.getElementById('calc-open-btn');

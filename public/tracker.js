@@ -52,6 +52,12 @@ const SHOP_ITEMS = [
   { id: 'extra_confetti', type: 'extra', label: 'Confetti Burst', price: 50, value: 'confetti', emoji: '🎊' },
   { id: 'extra_sound',    type: 'extra', label: 'Sound Effects',  price: 50, value: 'sound',    emoji: '🔔' },
   { id: 'extra_trophy',   type: 'extra', label: 'Trophy Shelf',   price: 50, value: 'trophy',   emoji: '🏆' },
+
+  //Pet Food
+    { id: 'food_apple', type: 'food', label: 'Apple', emoji: '🍎', price: 5, healthBoost: 10 },
+    { id: 'food_bone', type: 'food', label: 'Dog Bone', emoji: '🦴', price: 10, healthBoost: 25 },
+    { id: 'food_steak', type: 'food', label: 'Steak', emoji: '🥩', price: 20, healthBoost: 50 },
+
 ];
 
 // ── Shop ownership helpers ─────────────────────────────────────────────────────
@@ -467,8 +473,29 @@ function initExtras() {
 // ── Shop ──────────────────────────────────────────────────────────────────────
 function buyItem(id) {
   const item = SHOP_ITEMS.find(i => i.id === id);
-  if (!item || isOwned(id)) return;
-  const pts = getPoints();
+  if (!item) return;
+  if (item.type !== 'food' && isOwned(id)) return; 
+  
+    const pts = getPoints();
+
+  // Food Items
+  if (item.type === 'food') {
+    if (pts < item.price) { 
+      showToast('Not enough points! ⭐');
+      return; 
+    }
+
+    localStorage.setItem(POINTS_KEY, pts - item.price);
+    setPointsDisplay(pts - item.price);
+   
+    window.feedPet (item.healthBoost);
+
+    showToast(`Fed pet with ${item.emoji} ${item.label} to your pet!`);
+
+    renderShop();
+    return;
+  }
+
   if (pts < item.price) { showToast('Not enough points! ⭐'); return; }
   localStorage.setItem(POINTS_KEY, pts - item.price);
   setPointsDisplay(pts - item.price);
@@ -515,7 +542,9 @@ function renderShop() {
   let html = '';
   items.forEach(item => {
     const isFree = item.type === 'pet' && (item.value === 'cat' || item.value === 'dog');
-    const owns   = isFree || owned.includes(item.id);
+    const owns   = item.type === 'food'
+      ? false // Food items are never "owned", they are consumables
+      : isFree || owned.includes(item.id);
     const canBuy = pts >= item.price;
 
     let isActive = false;
@@ -546,7 +575,12 @@ function renderShop() {
 
     // Action button
     let action = '';
-    if (!owns) {
+    if (item.type === 'food') {
+      action = `<button class="shop-buy-btn" data-id="${item.id}" ${!canBuy ? 'disabled' : ''}>
+        🍖 Feed (${item.price} pts)
+      </button>`;
+    }
+    else if (!owns) {
       action = `<button class="shop-buy-btn" data-id="${item.id}" ${!canBuy ? 'disabled' : ''}>
         ${!canBuy ? '🔒' : '🛒'} ${item.price} pts
       </button>`;
