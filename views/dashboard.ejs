@@ -793,7 +793,7 @@
 
       function updatePetHealth() {
         const now = Date.now();
-        const minutesAway = (now - lastTimerUse) / 60000;
+        const minutesAway = (now - lastTimerUse) / 3000;
 
         const drop = Math.floor(minutesAway);
         if (drop > 0) {
@@ -812,7 +812,7 @@ function feedPet(amount = 100) {
 
 window.feedPet = feedPet;
 
-setInterval(updatePetHealth, 60000);
+setInterval(updatePetHealth, 3000);
 renderPetHealth();
 
       const overlay  = document.getElementById('calc-modal-overlay');
