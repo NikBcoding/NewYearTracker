@@ -1,11 +1,12 @@
 // Goal & Task Tracker — localStorage backed
+const USER_KEY    = window.CURRENT_USER || 'guest';
 
-const STORAGE_KEY = 'nyt_goals';
-const POINTS_KEY  = 'nyt_points';
-const BG_KEY      = 'nyt_bg_color';
-const SHOP_KEY    = 'nyt_shop_owned';
-const THEME_KEY   = 'nyt_theme';
-const ACCENT_KEY  = 'nyt_accent';
+const STORAGE_KEY = `nyt_goals_${USER_KEY}`;
+const POINTS_KEY  = `nyt_points_${USER_KEY}`;
+const BG_KEY      = `nyt_bg_color_${USER_KEY}`;
+const SHOP_KEY    = `nyt_shop_owned_${USER_KEY}`;
+const THEME_KEY   = `nyt_theme_${USER_KEY}`;
+const ACCENT_KEY  = `nyt_accent_${USER_KEY}`;
 
 // ── Shop catalogue ────────────────────────────────────────────────────────────
 const SHOP_ITEMS = [
@@ -475,7 +476,7 @@ function buyItem(id) {
   const item = SHOP_ITEMS.find(i => i.id === id);
   if (!item) return;
   if (item.type !== 'food' && isOwned(id)) return; 
-  
+
     const pts = getPoints();
 
   // Food Items
