@@ -769,9 +769,10 @@
 
     <div id="confetti-container" style="position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden;"></div>
     <div id="points-toast"></div>
+    
     <script>
-      window.CURRENT_USER = "<%- JSON.stringify(String(user._id || user.id || user.googleId || user.email || user.username)) %>";
-      console.log("CURRENT_USER:", window.CURRENT_USER);
+      window.CURRENT_USER = "<%= user && (user._id || user.id || user.googleId || user.email || user.username) ? String(user._id || user.id || user.googleId || user.email || user.username) : 'guest' %>";
+     console.log("CURRENT_USER:", window.CURRENT_USER);
     </script>
 
     <script src="/tracker.js"></script>
